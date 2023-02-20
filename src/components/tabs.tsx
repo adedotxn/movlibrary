@@ -21,7 +21,7 @@ const Tab = ({
   const [error, setError] = useState<unknown>("");
 
   const getTabDetails = () => {
-    fetch(url)
+    fetch(url, { cache: "no-cache" })
       .then((response) => response.json())
       .then((data) => {
         setTab(data.results);

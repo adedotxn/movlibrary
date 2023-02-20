@@ -1,36 +1,67 @@
-.card {
+.card,
+.moviePageCard {
     background-color: #171717;
     border-radius: .2rem;
     display: grid;
     padding: 1rem;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
 }
+
 
 .title {
-    font-size: 1.2rem;
+    font-size: 1.35rem;
 }
-
-
-
-.card section div {
-    margin-top: 1rem;
-    display: grid;
-    gap: .5rem;
-    grid-template-columns: repeat(2, 1fr)
-}
-
 
 .poster {
     margin-top: .5rem;
 }
 
 .plot {
-    font-size: 1rem;
+    padding: .5rem 0rem;
+    font-weight: 500;
+    font-size: 1.05rem;
 }
 
-.details p {
+.details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .3rem;
+}
+
+
+.details li {
     font-size: .9rem;
 }
 
 .extra__details {
+    display: grid;
     margin-top: .5rem;
+    gap: .2rem
+}
+
+
+
+@media screen and (min-width:1024px) {
+    .moviePageCard {
+        height: -webkit-fit-content;
+        height: -moz-fit-content;
+        height: fit-content;
+    }
+
+    .moviePageCard .image_and_text {
+        display: flex;
+    }
+
+    .moviePageCard .text {
+        display: grid;
+        margin-left: 1rem;
+        width: 40vw;
+    }
+
+    .moviePageCard .text .extra__details {
+        margin-top: 0;
+    }
+
 }

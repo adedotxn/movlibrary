@@ -19,7 +19,9 @@ const Card = ({ title, filter }: { title: string; filter?: string }) => {
   const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
 
   const getMoviesDetails = () => {
-    fetch(`https://www.omdbapi.com/?t=${searchParam}&apikey=${API_KEY}`)
+    fetch(`https://www.omdbapi.com/?t=${searchParam}&apikey=${API_KEY}`, {
+      cache: "no-cache",
+    })
       .then((response) => response.json())
       .then((data) => {
         setIsLoading(false);
@@ -45,7 +47,7 @@ const Card = ({ title, filter }: { title: string; filter?: string }) => {
     return <Error error={error} />;
   }
 
-  // when details of a searched movie can't be found
+  /* when details of a searched movie can't be found */
   if (pathname !== "/" && details.Error === "Movie not found!") {
     return (
       <div>
@@ -54,12 +56,12 @@ const Card = ({ title, filter }: { title: string; filter?: string }) => {
     );
   }
 
-  // when details of a move acnnot be found but others are available
+  /* when details of a move acnnot be found but others are available */
   if (details.Error === "Movie not found!") {
     return null;
   }
 
-  // when filtering by genre
+  /* when filtering by genre */
   if (filter !== undefined && filter.length > 0) {
     return (
       <>
@@ -82,47 +84,60 @@ interface CardDetails {
 }
 
 const CardDetails = ({ title, details }: CardDetails) => {
-  const { push } = useRouter();
-  return (
-    <section onClick={() => push(`/movie/${title}`)} className={styles.card}>
-      <h1 className={styles.title}>{title}</h1>
-      {details.Poster !== "N/A" ? (
-        <div className={styles.poster}>
-          <Image
-            src={`${details.Poster}`}
-            width={100}
-            height={100}
-            alt={`${title} Poster`}
-          />
-        </div>
-      ) : null}
-      <section>
-        <p className={styles.plot}>{details.Plot}</p>
+  const { push, pathname } = useRouter();
 
-        <div className={styles.details}>
-          <p>
-            <strong> Released </strong> : {details.Released}
-          </p>
-          <p>
-            <strong>Runtime :</strong> {details.Runtime}
-          </p>
-          <p>
-            <strong>Genre :</strong> {details.Genre}
-          </p>
-          <p>
-            <strong>Language :</strong> {details.Language}
-          </p>
+  /* returns true when on "_site_/movie/{{moviename}}"
+   * returns false when on home page ==> "_site_/"
+   */
+  const moviePage = pathname !== "/";
+
+  return (
+    <section
+      onClick={() => push(`/movie/${title}`)}
+      className={moviePage ? styles.moviePageCard : styles.card}
+    >
+      <h1 className={styles.title}>{title}</h1>
+      <section className={styles.image_and_text}>
+        {details.Poster !== "N/A" ? (
+          <div className={styles.poster}>
+            <Image
+              src={`${details.Poster}`}
+              width={moviePage ? 300 : 900}
+              height={300}
+              alt={`${title} Poster`}
+              sizes="100vw"
+              style={moviePage ? {} : { maxWidth: "100%", height: "auto" }}
+            />
+          </div>
+        ) : null}
+        <div className={styles.text}>
+          <p className={styles.plot}>{details.Plot}</p>
+
+          <ul className={styles.details}>
+            <li>
+              <strong> Released </strong> : {details.Released}
+            </li>
+            <li>
+              <strong>Runtime :</strong> {details.Runtime}
+            </li>
+            <li>
+              <strong>Genre :</strong> {details.Genre}
+            </li>
+            <li>
+              <strong>Language :</strong> {details.Language}
+            </li>
+          </ul>
+
+          <ul className={styles.extra__details}>
+            <li>
+              <strong>Actors :</strong> {details.Actors}
+            </li>
+            <li>
+              <strong>Country :</strong> {details.Country}
+            </li>
+          </ul>
         </div>
       </section>
-
-      <div className={styles.extra__details}>
-        <p>
-          <strong>Actors :</strong> {details.Actors}
-        </p>
-        <p>
-          <strong>Country :</strong> {details.Country}
-        </p>
-      </div>
     </section>
   );
 };

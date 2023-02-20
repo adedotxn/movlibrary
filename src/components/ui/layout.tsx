@@ -4,16 +4,12 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [startSearch, setStartSearch] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const { push } = useRouter();
   const handleSearch = (event: any) => {
     event.preventDefault();
     push(`/movie/${searchQuery}`);
-    setStartSearch(true);
-
-    console.log("searchQuery", searchQuery);
   };
   return (
     <>

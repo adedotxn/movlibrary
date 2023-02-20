@@ -1,0 +1,36 @@
+.card {
+    background-color: #171717;
+    border-radius: .2rem;
+    display: grid;
+    padding: 1rem;
+}
+
+.title {
+    font-size: 1.2rem;
+}
+
+
+
+.card section div {
+    margin-top: 1rem;
+    display: grid;
+    gap: .5rem;
+    grid-template-columns: repeat(2, 1fr)
+}
+
+
+.poster {
+    margin-top: .5rem;
+}
+
+.plot {
+    font-size: 1rem;
+}
+
+.details p {
+    font-size: .9rem;
+}
+
+.extra__details {
+    margin-top: .5rem;
+}

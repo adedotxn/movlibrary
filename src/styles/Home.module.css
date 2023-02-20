@@ -1,0 +1,98 @@
+.main,
+.header {
+  padding: .5rem 1rem;
+}
+
+.description {
+  font-family: var(--font-mono);
+}
+
+.header {
+  display: grid;
+  place-items: center;
+}
+
+.header form {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header form input {
+  padding: .5rem;
+  font-size: 1rem;
+}
+
+.header form button {
+  padding: .5rem;
+  font-size: 1rem;
+}
+
+.tabsPanel {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .5rem;
+  place-items: center;
+}
+
+.tabsPanel p {
+  background-color: #1f1f1f;
+  padding: .3rem 1rem;
+  border-radius: .4rem;
+  font-weight: 600;
+  font-size: .9rem;
+  cursor: pointer;
+}
+
+.filters {
+  margin-top: 1rem;
+  display: grid;
+  place-items: center;
+}
+
+.filters div {
+  margin: .3rem;
+  /* width: 90vw; */
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.filters select {
+  padding: .2rem 1rem;
+  font-size: .9rem;
+}
+
+
+
+.active {
+  border: 1px solid grey
+}
+
+
+
+
+
+@media screen and (min-width: 768px) {
+  .header form {
+    margin-top: .5rem;
+  }
+
+  .header input {
+    padding: .5rem 1rem;
+    width: 40vw;
+  }
+
+  .tabsPanel {
+    display: flex;
+    justify-content: space-between;
+    padding: .3rem 5rem;
+  }
+
+  .tabsPanel p {
+    padding: .5rem 1rem;
+    font-size: 1rem;
+
+  }
+}

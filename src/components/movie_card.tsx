@@ -19,7 +19,7 @@ const Card = ({ title, filter }: { title: string; filter?: string }) => {
   const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
 
   const getMoviesDetails = () => {
-    fetch(`http://www.omdbapi.com/?t=${searchParam}&apikey=${API_KEY}`)
+    fetch(`https://www.omdbapi.com/?t=${searchParam}&apikey=${API_KEY}`)
       .then((response) => response.json())
       .then((data) => {
         setIsLoading(false);

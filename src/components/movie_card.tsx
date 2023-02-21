@@ -100,7 +100,7 @@ const CardDetails = ({ title, details }: CardDetails) => {
   if (details.Plot === undefined) {
     return (
       <div className={styles.card}>
-        <p>API Limit Reached, Please try again later</p>
+        <p>API Limit Reached, Please try again later or Reload the page.</p>
       </div>
     );
   }

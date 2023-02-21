@@ -1,16 +1,9 @@
 import styles from "@/styles/Home.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import Tab from "@/components/tabs";
 
 export default function Home() {
   const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
-
-  const apiUrls: { [key: string]: string } = {
-    popular: `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`,
-    trending: `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}`,
-    upcoming: `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`,
-    playing: `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`,
-  };
 
   interface genre {
     id: number;
@@ -18,8 +11,8 @@ export default function Home() {
   }
   const [genres, setGenres] = useState<genre[]>([]);
 
-  const getGenre = () => {
-    fetch(
+  const getGenre = async () => {
+    await fetch(
       `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=en-US`
     )
       .then((response) => response.json())
@@ -50,6 +43,7 @@ export default function Home() {
       playing: false,
       upcoming: false,
     });
+    setCurrentPage(1);
   };
 
   const displayTrending = () => {
@@ -59,6 +53,7 @@ export default function Home() {
       playing: false,
       upcoming: false,
     });
+    setCurrentPage(1);
   };
 
   const displayPlaying = () => {
@@ -68,6 +63,7 @@ export default function Home() {
       playing: true,
       upcoming: false,
     });
+    setCurrentPage(1);
   };
 
   const displayUpcoming = () => {
@@ -77,41 +73,50 @@ export default function Home() {
       playing: false,
       upcoming: true,
     });
+    setCurrentPage(1);
   };
 
   const [genreFilter, setGenreFilter] = useState<string>("");
   const [releaseDates, setReleaseDates] = useState<string[]>([]);
   const [dateFilter, setDateFilter] = useState<string>("");
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const apiUrls: { [key: string]: string } = {
+    popular: `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${currentPage}`,
+    trending: `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}`,
+    upcoming: `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${currentPage}`,
+    playing: `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${currentPage}`,
+  };
+
   return (
     <>
       <section>
-        <div className={styles.tabsPanel}>
-          <p
+        <ul className={styles.tabsPanel}>
+          <li
             onClick={displayPopular}
             className={tab.popular ? styles.active : ""}
           >
             Popular
-          </p>
-          <p
+          </li>
+          <li
             onClick={displayTrending}
             className={tab.trending ? styles.active : ""}
           >
             Trending
-          </p>
-          <p
+          </li>
+          <li
             onClick={displayUpcoming}
             className={tab.upcoming ? styles.active : ""}
           >
             Upcoming
-          </p>
-          <p
+          </li>
+          <li
             onClick={displayPlaying}
             className={tab.playing ? styles.active : ""}
           >
             Now Playing
-          </p>
-        </div>
+          </li>
+        </ul>
 
         <div className={styles.filters}>
           <div>
@@ -170,6 +175,8 @@ export default function Home() {
             genreFilter={genreFilter}
             setDates={setReleaseDates}
             dateFilter={dateFilter}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         ) : null}
         {tab.trending ? (
@@ -188,6 +195,8 @@ export default function Home() {
             genreFilter={genreFilter}
             setDates={setReleaseDates}
             dateFilter={dateFilter}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         ) : null}
         {tab.playing ? (
@@ -197,6 +206,8 @@ export default function Home() {
             genreFilter={genreFilter}
             setDates={setReleaseDates}
             dateFilter={dateFilter}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         ) : null}
       </section>

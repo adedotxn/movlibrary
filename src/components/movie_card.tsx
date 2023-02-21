@@ -1,8 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./card.module.css";
 import Error from "./error";
+import Loader from "./ui/loader";
 
 const Card = ({ title, filter }: { title: string; filter?: string }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -18,8 +20,8 @@ const Card = ({ title, filter }: { title: string; filter?: string }) => {
   const [details, setDetails] = useState<{ [key: string]: string }>({});
   const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
 
-  const getMoviesDetails = () => {
-    fetch(`https://www.omdbapi.com/?t=${searchParam}&apikey=${API_KEY}`, {
+  const getMoviesDetails = async () => {
+    await fetch(`https://www.omdbapi.com/?t=${searchParam}&apikey=${API_KEY}`, {
       cache: "no-cache",
     })
       .then((response) => response.json())
@@ -40,7 +42,7 @@ const Card = ({ title, filter }: { title: string; filter?: string }) => {
   }, [searchParam]);
 
   if (isLoading) {
-    return <p>Loading</p>;
+    return <Loader />;
   }
 
   if (isError) {
@@ -50,8 +52,10 @@ const Card = ({ title, filter }: { title: string; filter?: string }) => {
   /* when details of a searched movie can't be found */
   if (pathname !== "/" && details.Error === "Movie not found!") {
     return (
-      <div>
-        <p>Couldnt find movie</p>
+      <div style={{ display: "grid", placeItems: "center", marginTop: "3rem" }}>
+        <p style={{ fontSize: "1.1rem", fontWeight: 600 }}>
+          Sorry, couldn&apos;t find &quot;{title}&quot;
+        </p>
       </div>
     );
   }
@@ -90,21 +94,33 @@ const CardDetails = ({ title, details }: CardDetails) => {
    * returns false when on home page ==> "_site_/"
    */
   const moviePage = pathname !== "/";
+  const posterUnavailable =
+    details.Poster === "N/A" || details.Poster === undefined;
+
+  if (details.Plot === undefined) {
+    return (
+      <div className={styles.card}>
+        <p>API Limit Reached, Please try again later</p>
+      </div>
+    );
+  }
 
   return (
-    <section
-      onClick={() => push(`/movie/${title}`)}
-      className={moviePage ? styles.moviePageCard : styles.card}
-    >
-      <h1 className={styles.title}>{title}</h1>
+    <section className={moviePage ? styles.moviePageCard : styles.card}>
+      <Link href={`/movie/${title}`}>
+        <h1 className={styles.title}>{title}</h1>
+      </Link>
       <section className={styles.image_and_text}>
-        {details.Poster !== "N/A" ? (
-          <div className={styles.poster}>
+        {!posterUnavailable ? (
+          <div
+            onClick={() => push(`/movie/${title}`)}
+            className={styles.poster}
+          >
             <Image
               src={`${details.Poster}`}
               width={moviePage ? 300 : 900}
               height={300}
-              alt={`${title} Poster`}
+              alt={title}
               sizes="100vw"
               style={moviePage ? {} : { maxWidth: "100%", height: "auto" }}
             />
@@ -122,6 +138,9 @@ const CardDetails = ({ title, details }: CardDetails) => {
             </li>
             <li>
               <strong>Genre :</strong> {details.Genre}
+            </li>
+            <li>
+              <strong>Rating :</strong> {details.Rated}
             </li>
             <li>
               <strong>Language :</strong> {details.Language}

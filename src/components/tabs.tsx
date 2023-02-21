@@ -1,7 +1,18 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./tabs.module.css";
 import Card from "./movie_card";
 import Error from "./error";
+import Pagination from "./ui/pagination";
+
+interface TabInterface {
+  tabName: string;
+  url: string;
+  genreFilter: string;
+  setDates: React.Dispatch<React.SetStateAction<string[]>>;
+  dateFilter: string;
+  currentPage?: number;
+  setCurrentPage?: React.Dispatch<React.SetStateAction<number>>;
+}
 
 const Tab = ({
   tabName,
@@ -9,22 +20,26 @@ const Tab = ({
   genreFilter,
   setDates,
   dateFilter,
-}: {
-  tabName: string;
-  url: string;
-  genreFilter: string;
-  setDates: React.Dispatch<React.SetStateAction<string[]>>;
-  dateFilter: string;
-}) => {
+  currentPage,
+  setCurrentPage,
+}: TabInterface) => {
   const [tab, setTab] = useState<any[]>([]);
   const [isError, setIsError] = useState<boolean>(false);
   const [error, setError] = useState<unknown>("");
+  const [pages, setPages] = useState<number>(1);
 
-  const getTabDetails = () => {
-    fetch(url, { cache: "no-cache" })
+  const paginationIsNeeded =
+    currentPage !== undefined && setCurrentPage !== undefined;
+
+  const getTabDetails = async () => {
+    await fetch(url, { cache: "no-cache" })
       .then((response) => response.json())
       .then((data) => {
+        if (paginationIsNeeded) {
+          setCurrentPage(data.page);
+        }
         setTab(data.results);
+        setPages(data.total_pages);
         const dates = data.results.map((data: { release_date: string }) => {
           return data.release_date;
         });
@@ -38,7 +53,7 @@ const Tab = ({
 
   useEffect(() => {
     getTabDetails();
-  }, []);
+  }, [currentPage]);
 
   if (isError) {
     return <Error error={error} />;
@@ -52,6 +67,7 @@ const Tab = ({
         <div className={styles.card}>
           {tab.length > 0 ? (
             <section className={styles.cards}>
+              {/** Conditionally showing movies when filtered by date and unfiltered */}
               {dateFilter.trim().length === 0
                 ? tab.map((movie) => (
                     <Card
@@ -74,11 +90,18 @@ const Tab = ({
                       />
                     ))}
             </section>
-          ) : (
-            <p>loading</p>
-          )}
+          ) : // <p>loading</p>
+          null}
         </div>
       </div>
+
+      {paginationIsNeeded ? (
+        <Pagination
+          pages={pages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      ) : null}
     </>
   );
 };

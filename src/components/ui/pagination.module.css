@@ -1,0 +1,16 @@
+.pagination {
+    display: grid;
+    place-items: center;
+    margin: 3rem 0rem;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+
+.pagination button {
+    border: 0px solid;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: var(--accent-color);
+}

@@ -1,6 +1,6 @@
 .card,
 .moviePageCard {
-    background-color: #171717;
+    background-color: var(--card-bg);
     border-radius: .2rem;
     display: grid;
     padding: 1rem;
@@ -12,16 +12,24 @@
 
 .title {
     font-size: 1.35rem;
+    cursor: pointer;
+}
+
+.title:hover,
+.title:active {
+    color: rgb(40, 85, 247);
 }
 
 .poster {
     margin-top: .5rem;
+    cursor: pointer;
 }
 
 .plot {
     padding: .5rem 0rem;
     font-weight: 500;
     font-size: 1.05rem;
+    color: var(--text-color);
 }
 
 .details {

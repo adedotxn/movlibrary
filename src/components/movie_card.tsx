@@ -4,42 +4,22 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "./card.module.css";
 import Error from "./error";
+import { useDetailsFetch } from "./hook/use-DetailsFetch";
 import Loader from "./ui/loader";
 
 const Card = ({ title, filter }: { title: string; filter?: string }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [error, setError] = useState<unknown>("");
-
   const { query, pathname } = useRouter();
   const titleFromUrl = query.title as string;
 
   // preserving the movie title on refresh
   let searchParam = title === undefined ? titleFromUrl : title;
-
-  const [details, setDetails] = useState<{ [key: string]: string }>({});
   const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
+  const url = `https://www.omdbapi.com/?t=${searchParam}&apikey=${API_KEY}`;
 
-  const getMoviesDetails = async () => {
-    await fetch(`https://www.omdbapi.com/?t=${searchParam}&apikey=${API_KEY}`, {
-      cache: "no-cache",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setIsLoading(false);
-        setDetails(data);
-      })
-      .catch((error) => {
-        setIsError(true);
-        setError(error);
-      });
-  };
-
-  useEffect(() => {
-    if (searchParam) {
-      getMoviesDetails();
-    }
-  }, [searchParam]);
+  const { details, isError, error, isLoading } = useDetailsFetch(
+    url,
+    searchParam
+  );
 
   if (isLoading) {
     return <Loader />;

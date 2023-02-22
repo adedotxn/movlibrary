@@ -3,6 +3,7 @@ import styles from "./tabs.module.css";
 import Card from "./movie_card";
 import Error from "./error";
 import Pagination from "./ui/pagination";
+import { useTabFetch } from "./hook/use-TabFetch";
 
 interface TabInterface {
   tabName: string;
@@ -23,37 +24,15 @@ const Tab = ({
   currentPage,
   setCurrentPage,
 }: TabInterface) => {
-  const [tab, setTab] = useState<any[]>([]);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [error, setError] = useState<unknown>("");
-  const [pages, setPages] = useState<number>(1);
-
   const paginationIsNeeded =
     currentPage !== undefined && setCurrentPage !== undefined;
 
-  const getTabDetails = async () => {
-    await fetch(url, { cache: "no-cache" })
-      .then((response) => response.json())
-      .then((data) => {
-        if (paginationIsNeeded) {
-          setCurrentPage(data.page);
-        }
-        setTab(data.results);
-        setPages(data.total_pages);
-        const dates = data.results.map((data: { release_date: string }) => {
-          return data.release_date;
-        });
-        setDates(dates);
-      })
-      .catch((error) => {
-        setIsError(true);
-        setError(error);
-      });
-  };
-
-  useEffect(() => {
-    getTabDetails();
-  }, [currentPage]);
+  const { tab, isError, pages, error } = useTabFetch(
+    url,
+    currentPage!,
+    setCurrentPage!,
+    setDates
+  );
 
   if (isError) {
     return <Error error={error} />;

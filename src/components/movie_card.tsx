@@ -4,22 +4,15 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "./card.module.css";
 import Error from "./error";
-import { useDetailsFetch } from "./hook/use-DetailsFetch";
+import { useDetailsFetch } from "../hooks/use-DetailsFetch";
 import Loader from "./ui/loader";
 
 const Card = ({ title, filter }: { title: string; filter?: string }) => {
   const { query, pathname } = useRouter();
   const titleFromUrl = query.title as string;
 
-  // preserving the movie title on refresh
-  let searchParam = title === undefined ? titleFromUrl : title;
-  const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
-  const url = `https://www.omdbapi.com/?t=${searchParam}&apikey=${API_KEY}`;
-
-  const { details, isError, error, isLoading } = useDetailsFetch(
-    url,
-    searchParam
-  );
+  let searchParam = title === undefined ? titleFromUrl : title; // preserving the movie title on refresh
+  const { details, isError, error, isLoading } = useDetailsFetch(searchParam);
 
   if (isLoading) {
     return <Loader />;

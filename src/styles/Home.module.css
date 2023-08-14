@@ -1,8 +1,7 @@
 .main,
 .header {
-  padding: .5rem 1rem;
+  padding: 0.8rem 1rem;
 }
-
 
 .header {
   display: grid;
@@ -11,85 +10,98 @@
 
 .header form {
   margin-top: 1rem;
-  display: flex;
+  display: grid;
   align-items: center;
-  gap: 1rem;
+  place-items: center;
+  gap: 0.5rem;
 }
 
 .header form input {
-  padding: .5rem;
+  width: 90vw;
+  margin-top: 0.5rem;
+  padding: 0.6rem;
   font-size: 1rem;
+  background-color: var(--card-bg);
+  border: 1.5px solid var(--accent-color);
+  border-radius: 0.3rem;
 }
 
 .header form button {
-  padding: .5rem;
-  font-size: 1rem;
+  padding: 0.35rem 1rem;
+  font-size: 1.1rem;
+  background-color: rgba(255, 255, 255, 0.921);
+  color: black;
+  border: 1px solid transparent;
+  cursor: pointer;
+  border-radius: 0.15rem;
+  transition: transform 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out,
+    border 0.5s ease-in-out;
+  font-weight: 700;
+  font-family: var(--font);
+}
+
+.header form button:hover {
+  border: 1px solid rgb(91, 90, 90);
+}
+
+.header form button:active {
+  -webkit-transform: scale(0.9);
+  transform: translateY(10%) scale(0.9);
 }
 
 .tabsPanel {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: .5rem;
+  gap: 0.5rem;
   place-items: center;
 }
 
 .tabsPanel li {
-  background-color: var(--accent-color);
-  padding: .3rem 1rem;
-  border-radius: .4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
   font-weight: 600;
-  font-size: .9rem;
+  font-size: 0.9rem;
   cursor: pointer;
+  font-size: 1.1rem;
 }
 
-.filters {
-  margin-top: 1rem;
-  display: grid;
-  place-items: center;
+.tabName {
+  background-color: var(--accent-color);
 }
-
-.filters div {
-  margin: .3rem;
-  /* width: 90vw; */
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-}
-
-.filters select {
-  padding: .2rem 1rem;
-  font-size: .9rem;
-}
-
-
 
 .active {
-  border: 1px solid grey
+  border: 1px solid grey;
 }
-
-
-
-
 
 @media screen and (min-width: 768px) {
   .header form {
-    margin-top: .5rem;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
   }
 
-  .header input {
-    padding: .5rem 1rem;
+  .header form input {
+    padding: 0.6rem 1rem;
     width: 40vw;
+  }
+
+  .header form button {
+    font-size: 1rem;
   }
 
   .tabsPanel {
     display: flex;
     justify-content: space-between;
-    padding: .3rem 5rem;
+    padding: 0.3rem 5rem;
   }
 
   .tabsPanel p {
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     font-size: 1rem;
+  }
 
+  .filters {
+    display: grid;
+    place-items: center;
   }
 }

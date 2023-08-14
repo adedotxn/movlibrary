@@ -4,7 +4,12 @@ const cache: {
   [key: string]: { [key: string]: string };
 } = {};
 
-export const useDetailsFetch = (url: string, searchParam: string) => {
+export const useDetailsFetch = (searchParam: string) => {
+  const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
+
+  const url = `https://www.omdbapi.com/?t=${searchParam}&apikey=${API_KEY}`;
+
+
   const [details, setDetails] = useState<{ [key: string]: string }>({});
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);

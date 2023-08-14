@@ -1,53 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,200;10..48,300;10..48,400;10..48,500;10..48,600;10..48,700;10..48,800&display=swap");
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+  --font: "Bricolage Grotesque", sans-serif, ui-monospace, Menlo, Monaco,
+    "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono",
+    "Ubuntu Monospace", "Source Code Pro", "Fira Mono", "Droid Sans Mono",
+    "Courier New", monospace;
 
-  --background-dark: black;
-  --text-color-dark: white;
-  --accent-dark: #1f1f1f;
-  --card-background-dark: #171717;
-
-  --background-light: white;
-  --text-color-light: black;
-  --card-background-light: #c1c1c1;
-  --accent-light: #c1c1c1;
-
-
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: var(--background-dark);
-    --text-color: var(--text-color-dark);
-    --accent-color: var(--accent-dark);
-    --card-bg: var(--card-background-dark);
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: var(--background-light);
-    --text-color: var(--text-color-light);
-    --accent-color: var(--accent-light);
-    --card-bg: var(--card-background-light);
-  }
-}
-
-[color-scheme="dark"] {
-  --background: var(--background-dark);
-  --text-color: var(--text-color-dark);
-  --accent-color: var(--accent-dark);
-  --card-bg: var(--card-background-dark);
-}
-
-[color-scheme="light"] {
-  --background: var(--background-light);
-  --text-color: var(--text-color-light);
-  --accent-color: var(--accent-light);
-  --card-bg: var(--card-background-light);
+  --background: #09090b;
+  --accent-color: #27272a;
+  --text-color: white;
+  --border-line-dark: #8d8b8b;
+  --card-bg: #18181b;
 }
 
 * {
@@ -60,6 +25,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  font-family: var(--font);
 }
 
 body {

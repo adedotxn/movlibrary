@@ -2,6 +2,7 @@ import React, { ReactNode, useState } from "react";
 import styles from "@/styles/Home.module.css";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Link from "next/link";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -9,6 +10,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const { push } = useRouter();
   const handleSearch = (event: any) => {
     event.preventDefault();
+    if (searchQuery.trim().length === 0) return;
     push(`/movie/${searchQuery}`);
   };
   return (
@@ -23,7 +25,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <header className={styles.header}>
-        <h1>movLibrary</h1>
+        <h1>
+          {" "}
+          <Link href="/">MovLibrary 🎬</Link>{" "}
+        </h1>
 
         <form onSubmit={handleSearch}>
           <label htmlFor="search"></label>
@@ -32,7 +37,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
             onChange={(e) => setSearchQuery(e.target.value)}
             type="text"
             name="search"
-            placeholder="Search movies"
+            placeholder="Type in a movie title (e.g Barbie)"
           />
           <button type="submit">Search</button>
         </form>

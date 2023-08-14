@@ -1,0 +1,36 @@
+.filters {
+  margin-top: 2rem;
+  /* width: 60vw; */
+  margin: 0 auto;
+  display: grid;
+  align-items: center;
+}
+
+.filters h3 {
+  margin-top: 2rem;
+  font-size: 1.1rem;
+}
+
+.filters div {
+  margin: 0.3rem;
+  /* width: 90vw; */
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.filters select {
+  margin-top: 0.3rem;
+  background-color: var(--background);
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  border-radius: 0.35rem;
+  border: 1.5px solid var(--accent-color);
+}
+
+@media screen and (min-width: 768px) {
+  .filters {
+    display: grid;
+    place-items: center;
+  }
+}

@@ -1,88 +1,28 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { apiUrls } from "@/utils/urls";
+import { useFilters, useTabs } from "../hooks";
+import Tab from "./tab";
 import styles from "./tabs.module.css";
-import Card from "./movie_card";
-import Error from "./error";
-import Pagination from "./ui/pagination";
-import { useTabFetch } from "./hook/use-TabFetch";
 
-interface TabInterface {
-  tabName: string;
-  url: string;
-  genreFilter: string;
-  setDates: React.Dispatch<React.SetStateAction<string[]>>;
-  dateFilter: string;
-  currentPage?: number;
-  setCurrentPage?: React.Dispatch<React.SetStateAction<number>>;
-}
+const Tabs = () => {
+  const { tab, currentPage, setCurrentPage } = useTabs();
 
-const Tab = ({
-  tabName,
-  url,
-  genreFilter,
-  setDates,
-  dateFilter,
-  currentPage,
-  setCurrentPage,
-}: TabInterface) => {
-  const paginationIsNeeded =
-    currentPage !== undefined && setCurrentPage !== undefined;
-
-  const { tab, isError, pages, error } = useTabFetch(
-    url,
-    currentPage!,
-    setCurrentPage!,
-    setDates
-  );
-
-  if (isError) {
-    return <Error error={error} />;
-  }
+  const popular = apiUrls.popular(currentPage);
+  const trending = apiUrls.trending();
+  const upcoming = apiUrls.upcoming(currentPage);
+  const playing = apiUrls.playing(currentPage);
 
   return (
-    <>
-      <div className={styles.tabs}>
-        <h2>{tabName}</h2>
-
-        <div className={styles.card}>
-          {tab.length > 0 ? (
-            <section className={styles.cards}>
-              {/** Conditionally showing movies when filtered by date and unfiltered */}
-              {dateFilter.trim().length === 0
-                ? tab.map((movie) => (
-                    <Card
-                      filter={genreFilter}
-                      key={movie.id}
-                      title={movie.title}
-                    />
-                  ))
-                : tab
-                    .filter((date) => {
-                      if (date.release_date === dateFilter) {
-                        return tab;
-                      }
-                    })
-                    .map((movie) => (
-                      <Card
-                        filter={genreFilter}
-                        key={movie.id}
-                        title={movie.title}
-                      />
-                    ))}
-            </section>
-          ) : // <p>loading</p>
-          null}
-        </div>
-      </div>
-
-      {paginationIsNeeded ? (
-        <Pagination
-          pages={pages}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+    <section className={styles.alltabs}>
+      {tab.popular ? <Tab tabName="Popular Movies" url={popular} /> : null}
+      {tab.trending ? <Tab tabName="Trending Movies" url={trending} /> : null}
+      {tab.upcoming ? (
+        <Tab tabName="Upcoming movies (in theaters)" url={upcoming} />
       ) : null}
-    </>
+      {tab.playing ? (
+        <Tab tabName="NOW PLAYING (in theaters)" url={playing} />
+      ) : null}
+    </section>
   );
 };
 
-export default Tab;
+export default Tabs;

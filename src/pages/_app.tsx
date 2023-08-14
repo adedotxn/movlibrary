@@ -1,15 +1,16 @@
 import Layout from "@/components/ui/layout";
 import "@/styles/globals.css";
-import { Inter } from "@next/font/google";
 import type { AppProps } from "next/app";
-const inter = Inter({ subsets: ["latin"] });
+import { UtilityProvider } from "@/utils/context";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <main className={inter.className}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+    <main>
+      <UtilityProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </UtilityProvider>
     </main>
   );
 }

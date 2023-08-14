@@ -1,9 +1,7 @@
-# Uptick Assessment
-A simple web application that allows users to search for and
-view information about movies. The application should include a search bar and
-the ability to filter results by genre and release date.
+A simple web application that's used to search for and
+view information about trending, popular or upcoming movies. 
 
-## Web app URL -> [movlibrary.vercel.app](https://movlibrary.vercel.app/)
+### Live Url : [movlibrary.vercel.app](https://movlibrary.vercel.app/)
 
 ### Tools used
 - [Next.js](https://nextjs.org/)
